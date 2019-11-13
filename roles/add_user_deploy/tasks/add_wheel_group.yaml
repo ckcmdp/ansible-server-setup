@@ -1,0 +1,6 @@
+---
+
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present

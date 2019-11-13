@@ -1,0 +1,6 @@
+---
+# tasks file for add_user_deploy
+
+- import_tasks: add_wheel_group.yaml
+- import_tasks: add_wheel_to_sudoers.yaml
+- import_tasks: add_deploy_to_wheel_group.yaml

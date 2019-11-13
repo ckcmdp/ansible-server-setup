@@ -1,0 +1,8 @@
+---
+# tasks file for elixir
+
+- import_tasks: add_Erlang_repository.yaml
+  notify:
+    - update apt
+- import_tasks: install_Erlang_platform.yaml
+- import_tasks: install_elixir.yaml

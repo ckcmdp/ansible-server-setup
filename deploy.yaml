@@ -1,128 +1,15 @@
 ---
 
--  hosts: ubun
-   vars:
-     password: deploy
-     ansible_become_password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.
-
-   tasks:
-     -  name: Update all packages to the latest version
-        apt:
-          upgrade: dist
-
-     -  name: install sudo
-        apt:
-          name: sudo
-          state: latest
-
-     -  name: install curl
-        apt:
-          name: curl
-          state: latest
-
-     -  name: install gpg
-        apt: name=gnupg state=latest
-
-     -  name: Make sure we have a 'wheel' group
-        group:
-          name: wheel
-          state: present
-
-     -  name: Allow 'wheel' group to have sudo
-        lineinfile:
-           dest: /etc/sudoers
-           state: present
-           regexp: "^%wheel"
-           line: "%wheel ALL=(ALL) ALL"
-           validate: "visudo -cf %s"
-
-     -  name: Add sudoers users to wheel group
-        user:
-          name: deploy
-          password: "{{ ansible_become_password }}"
-          groups: wheel
-          append: yes
-          state: present
-          createhome: yes
-
-     -  name: Set up authorized keys for the deploy user
-        authorized_key: user=deploy key="{{item}}"
-        with_file:
-         - /home/Arnab/.ssh/id_rsa.pub
-
-     -  name: download Erlang Solutions repo file
-        get_url: url=https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb dest=/tmp
-
-     -  name: Add Erlang Solutions repo
-        command: dpkg -i erlang-solutions_2.0_all.deb chdir=/tmp
-
-     -  name: update repos
-        command: apt-get update
-
-     -  name: install Erlang platform
-        apt:
-          name: esl-erlang
-          state: latest
-
-     -  name: install Elixir
-        apt:
-          name: elixir
-          state: latest
-
-     -  name: curl nodejs 12
-        shell: curl -sL https://deb.nodesource.com/setup_12.x | bash -
-
-     -  name: install nodejs 12
-        apt:
-          name: nodejs
-          state: latest
-
-     -  name: install Ruby dependencies
-        apt:
-          name: ['git-core', 'zlib1g-dev', 'build-essential', 'libssl-dev', 'libreadline-dev', 'libyaml-dev', 'libxml2-dev', 'libxslt1-dev', 'libcurl4-openssl-dev', 'software-properties-common', 'libffi-dev', 'libgdbm-dev','libncurses5-dev','automake','libtool','bison','libffi-dev', 'yarn', 'ruby-dev', 'libmysqlclient-dev', 'libpq-dev']
-
-     -  name: download ruby 2.6.5
-        get_url: url=http://ftp.ruby-lang.org/pub/ruby/2.6/ruby-2.6.5.tar.gz dest=/home/deploy/ruby-2.6.5.tar.gz
-
-     -  name: extract ruby 2.6.5
-        unarchive:
-          src: /home/deploy/ruby-2.6.5.tar.gz
-          dest: /home/deploy
-          creates: /home/deploy/ruby-2.6.5
-          remote_src: yes
-
-     -  name: Running ./configure for ruby-2.6.5
-        command: ./configure chdir=/home/deploy/ruby-2.6.5/
-
-     -  name: Running "make" for ruby-2.6.5
-        command: make chdir=/home/deploy/ruby-2.6.5/
-
-     -  name: Running "make install" for ruby-2.6.5
-        command: make install chdir=/home/deploy/ruby-2.6.5/
-
-     -  name: stop nginx
-        service:
-          name: nginx
-          state: stopped
-
-     -  name: ensure nginx is not installed
-        apt:  name=nginx state=absent
-
-     -  name: ensure nginx is at the latest version
-        apt: name=nginx state=latest
-
-     -  name: start nginx
-        service:
-          name: nginx
-          state: started
-
-
-
--  hosts: ubun
-   become: yes
-   become_user: deploy
-   tasks:
-     -  name: install bundler
-        gem:
-          name: bundler
-          state: latest
+- hosts: ubun
+  remote_user: root
+  become: yes
+  vars:
+    download_dir: /tmp
+  roles:
+    - prerequisites
+    - add_user_deploy
+    - nodejs
+    - yarn
+    - elixir
+    - ruby
+    - nginx

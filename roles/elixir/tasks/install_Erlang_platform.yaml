@@ -1,0 +1,6 @@
+---
+- name: install Erlang platform
+  apt:
+    update_cache: yes
+    name: esl-erlang
+    state: latest

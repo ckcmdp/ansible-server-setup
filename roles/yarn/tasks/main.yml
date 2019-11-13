@@ -1,0 +1,14 @@
+---
+# tasks file for yarn
+
+- name: enable the Yarn repository
+  shell: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+
+- name: Add the Yarn APT repository to systems software repository
+  shell: echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+- name: install yarn
+  apt:
+    update_cache: yes
+    name: yarn
+    state: latest

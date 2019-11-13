@@ -1,0 +1,5 @@
+---
+- name: install Elixir
+  apt:
+    name: elixir
+    state: latest

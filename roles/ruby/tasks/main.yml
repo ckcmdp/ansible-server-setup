@@ -1,0 +1,9 @@
+---
+# tasks file for ruby
+
+- import_tasks: install_ruby_dependencies.yaml
+
+- name: install ruby from apt
+  apt:
+    name: ruby-full
+    state: latest

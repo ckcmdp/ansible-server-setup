@@ -1,0 +1,10 @@
+---
+# tasks file for nodejs
+
+- name: curl nodejs 12
+  shell: curl -sL https://deb.nodesource.com/setup_12.x | bash -
+
+- name: install nodejs 12
+  apt:
+    name: nodejs
+    state: latest

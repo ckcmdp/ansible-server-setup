@@ -1,0 +1,17 @@
+---
+# tasks file for prerequisites
+
+- name: Update all packages to the latest version
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: install curl
+  apt:
+    name: curl
+    state: latest
+
+- name: install gpg
+  apt:
+    name: gnupg
+    state: latest
