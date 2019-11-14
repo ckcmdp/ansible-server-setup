@@ -1,6 +1,0 @@
----
-
-- name: install Ruby dependencies
-  apt:
-    update_cache: yes
-    name: ['git-core', 'zlib1g-dev', 'build-essential', 'libssl-dev', 'libreadline-dev', 'libyaml-dev', 'libxml2-dev', 'libxslt1-dev', 'libcurl4-openssl-dev', 'software-properties-common', 'libffi-dev', 'libgdbm-dev','libncurses5-dev','automake','libtool','bison','libffi-dev', 'ruby-dev', 'libmysqlclient-dev', 'libpq-dev']

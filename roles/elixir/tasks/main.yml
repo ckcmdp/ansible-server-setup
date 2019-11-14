@@ -1,8 +1,20 @@
 ---
-# tasks file for elixir
 
-- import_tasks: add_Erlang_repository.yaml
-  notify:
-    - update apt
-- import_tasks: install_Erlang_platform.yaml
-- import_tasks: install_elixir.yaml
+- name: download Erlang Solutions repo file
+  get_url:
+    url: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+    dest: "{{ download_dir }}"
+
+- name: Add Erlang Solutions repo
+  command: dpkg -i erlang-solutions_2.0_all.deb chdir="{{ download_dir }}"
+
+- name: install Erlang platform
+  apt:
+    update_cache: yes
+    name: esl-erlang
+    state: latest
+
+- name: install Elixir
+  apt:
+    name: elixir
+    state: latest

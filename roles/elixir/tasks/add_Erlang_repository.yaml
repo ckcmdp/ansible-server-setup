@@ -1,8 +1,0 @@
----
-- name: download Erlang Solutions repo file
-  get_url:
-    url: https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
-    dest: "{{ download_dir }}"
-
-- name: Add Erlang Solutions repo
-  command: dpkg -i erlang-solutions_2.0_all.deb chdir="{{ download_dir }}"

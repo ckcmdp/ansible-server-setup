@@ -1,6 +1,23 @@
 ---
-# tasks file for add_user_deploy
 
-- import_tasks: add_wheel_group.yaml
-- import_tasks: add_wheel_to_sudoers.yaml
-- import_tasks: add_deploy_to_wheel_group.yaml
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+
+- name: Allow 'wheel' group to have sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: "^%wheel"
+    line: "%wheel ALL=(ALL) ALL"
+    validate: "visudo -cf %s"
+
+- name: Add sudoer user deploy to wheel group
+  user:
+    name: deploy
+    password: "{{ ansible_become_password }}"
+    groups: wheel
+    append: yes
+    state: present
+    createhome: yes
