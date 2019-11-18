@@ -21,3 +21,10 @@
     append: yes
     state: present
     createhome: yes
+
+- name: Set up authorized keys for the deploy user
+  authorized_key:
+    user: deploy
+    key: "{{item}}"
+  with_file:
+    - /home/Arnab/.ssh/id_rsa.pub

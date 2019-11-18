@@ -1,0 +1,32 @@
+---
+
+- name: install latest version of logrotate
+  apt:
+    update_cache: yes
+    name: logrotate
+    state: latest
+
+- name: setup logrotate configuration in /etc/logrotate.d/{{APP_NAME}}
+  copy:
+    dest: /etc/logrotate.d/{{APP_NAME}}
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      /home/deploy/production/{{APP_NAME}}/current/log/*.log {
+        su deploy deploy
+        daily
+        missingok
+        rotate 15
+        compress
+        delaycompress
+        notifempty
+        copytruncate }
+
+- name: Set up cron for daily logrotation of {{APP_NAME}}
+  cron:
+    name:  daily log rotation of {{APP_NAME}}
+    minute: "0"
+    hour: "0"
+    user: deploy
+    job: /usr/sbin/logrotate -f /etc/logrotate.d/{{APP_NAME}} > /dev/null

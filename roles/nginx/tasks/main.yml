@@ -15,3 +15,60 @@
   service:
     name: nginx
     state: started
+
+- name: Copy shared.conf file
+  copy:
+    src: files/shared.conf
+    dest: /etc/nginx/shared.conf
+    mode: 0644
+
+- name: Copy rails_app.conf file
+  copy:
+    src: files/rails_app.conf
+    dest: /etc/nginx/rails_app.conf
+    mode: 0644
+
+- name: Copy restrictions.conf code
+  copy:
+    src: files/restrictions.conf
+    dest: /etc/nginx/restrictions.conf
+    mode: 0644
+
+- name: create a configuration file with app name and put app specific config
+  copy:
+    dest: "/etc/nginx/sites-available/{{ APP_NAME }}"
+    mode: 0644
+    content:
+      "upstream app {
+        server unix:/home/deploy/production/{{ APP_NAME }}/shared/tmp/sockets/puma.sock fail_timeout=0;
+        }
+
+      server {
+        server_name localhost;
+
+        root /home/deploy/production/{{ APP_NAME }}/current/public;
+
+        access_log /home/deploy/production/{{ APP_NAME }}/current/log/nginx.access.log;
+        error_log /home/deploy/production/{{ APP_NAME }}/current/log/nginx.error.log info;
+
+        include /etc/nginx/shared.conf;
+        include /etc/nginx/rails_app.conf;
+        include /etc/nginx/restrictions.conf;
+        } "
+
+- name: create symlink for {{ APP_NAME }} nginx config
+  file:
+    src: /etc/nginx/sites-available/{{ APP_NAME }}
+    dest: /etc/nginx/sites-enabled/{{ APP_NAME  }}
+    state: link
+
+- name: remove default nginx configuration
+  file:
+    path: /etc/nginx/sites-available/default
+    state: absent
+
+- name: remove default nginx configuration
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Restart Nginx

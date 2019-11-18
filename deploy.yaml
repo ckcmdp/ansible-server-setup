@@ -1,15 +1,34 @@
 ---
 
+# - hosts: ubun
+#   remote_user: root
+#   become: yes
+#   vars:
+#     - download_dir: /tmp
+#   roles:
+#     - prerequisites
+#     - add_user_deploy
+#     - nodejs
+#     - yarn
+#     - elixir
+#     - ruby
+#     - bundler
+
+# - hosts: my_system
+#   remote_user: Arnab
+#   vars:
+#     APP_DIR:
+#   tasks:
+#     - name: run capistrano
+#       shell: bash -lc "bundle exec cap production deploy"
+#       args:
+#         chdir: "{{APP_DIR}}"
+
 - hosts: ubun
   remote_user: root
   become: yes
   vars:
-    download_dir: /tmp
+    APP_NAME:
   roles:
-    - prerequisites
-    - add_user_deploy
-    - nodejs
-    - yarn
-    - elixir
-    - ruby
-    - nginx
+    # - nginx
+    - logrotate

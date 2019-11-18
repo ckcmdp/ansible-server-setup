@@ -1,0 +1,9 @@
+---
+
+- name: install bundler
+  gem:
+    name: bundler
+    user_install: no
+
+- name: update gem
+  shell: gem update --system
