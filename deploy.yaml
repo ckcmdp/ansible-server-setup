@@ -1,9 +1,8 @@
 ---
 
 # host for configuring ubuntu server for rails and elixir
-- hosts: ubun
+- hosts: servers
   remote_user: root
-  become: yes
   vars_files:
     - variables.yml
   roles:
@@ -27,11 +26,10 @@
         chdir: "{{ APP_DIR }}"
 
 # host for configuring ubuntu server for nginx and logrotate
-- hosts: ubun
+- hosts: servers
   remote_user: root
-  become: yes
   vars_files:
     - variables.yml
   roles:
-    - nginx
     - logrotate
+    - nginx

@@ -1,4 +1,4 @@
-all:
+servers:
   hosts:
      ubun:
         ansible_connection: ssh
@@ -6,8 +6,10 @@ all:
         ansible_port: 52022
         ansible_user: 'root'
 
+local_machine:
+  hosts:
      my_system:
-        ansible_connection: ssh
-        ansible_host: "localhost"
-        ansible_port: 22
-        ansible_user: 'Arnab'
+       ansible_connection: ssh
+       ansible_host: "localhost"
+       ansible_port: 22
+       ansible_user: 'Arnab'
