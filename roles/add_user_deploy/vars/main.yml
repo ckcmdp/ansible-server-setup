@@ -1,5 +1,0 @@
----
-# vars file for add_user_deploy
-
-password: deploy
-ansible_become_password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.

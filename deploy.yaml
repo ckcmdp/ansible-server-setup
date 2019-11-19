@@ -1,34 +1,37 @@
 ---
 
-# - hosts: ubun
-#   remote_user: root
-#   become: yes
-#   vars:
-#     - download_dir: /tmp
-#   roles:
-#     - prerequisites
-#     - add_user_deploy
-#     - nodejs
-#     - yarn
-#     - elixir
-#     - ruby
-#     - bundler
-
-# - hosts: my_system
-#   remote_user: Arnab
-#   vars:
-#     APP_DIR:
-#   tasks:
-#     - name: run capistrano
-#       shell: bash -lc "bundle exec cap production deploy"
-#       args:
-#         chdir: "{{APP_DIR}}"
-
+# host for configuring ubuntu server for rails and elixir
 - hosts: ubun
   remote_user: root
   become: yes
-  vars:
-    APP_NAME:
+  vars_files:
+    - variables.yml
   roles:
-    # - nginx
+    - prerequisites
+    - add_user_deploy
+    - nodejs
+    - yarn
+    - elixir
+    - ruby
+    - bundler
+
+# host for deploying application from local machine
+- hosts: my_system
+  remote_user: "{{ USER }}"
+  vars_files:
+    - variables.yml
+  tasks:
+    - name: run capistrano
+      shell: bash -lc "bundle exec cap production deploy"
+      args:
+        chdir: "{{ APP_DIR }}"
+
+# host for configuring ubuntu server for nginx and logrotate
+- hosts: ubun
+  remote_user: root
+  become: yes
+  vars_files:
+    - variables.yml
+  roles:
+    - nginx
     - logrotate

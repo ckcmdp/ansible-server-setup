@@ -1,0 +1,17 @@
+# set download directory for packages
+download_dir: /tmp
+
+# set app name
+APP_NAME: testDeploy
+
+# set app directory of your local machine
+APP_DIR: /home/Arnab/dev/testDeploy
+
+# set deploy directory name. for eg- "production", App will be deployed to /home/deploy/production
+DEPLOY_DIR: production
+
+# Provide your local machine username
+USER: Arnab
+
+# password for user deploy( make sure it is encrypted )
+deploy_user_password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.

@@ -16,7 +16,7 @@
 - name: Add sudoer user deploy to wheel group
   user:
     name: deploy
-    password: "{{ ansible_become_password }}"
+    password: "{{ deploy_user_password }}"
     groups: wheel
     append: yes
     state: present
@@ -27,4 +27,4 @@
     user: deploy
     key: "{{item}}"
   with_file:
-    - /home/Arnab/.ssh/id_rsa.pub
+    - /home/{{ USER }}/.ssh/id_rsa.pub
