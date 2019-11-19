@@ -28,5 +28,5 @@
     name:  daily log rotation of {{APP_NAME}}
     minute: "0"
     hour: "0"
-    user: deploy
+    user: root
     job: /usr/sbin/logrotate -f /etc/logrotate.d/{{APP_NAME}} > /dev/null
