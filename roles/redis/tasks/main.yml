@@ -1,0 +1,32 @@
+---
+
+- name: install redis-server
+  apt:
+    name: redis-server
+    state: latest
+    update_cache: yes
+
+- name: add some configurations to /etc/redis/redis.conf
+  blockinfile:
+    path: /etc/redis/redis.conf
+    block: |
+      maxmemory 256mb
+      maxmemory-policy allkeys-lru
+
+- name: reload systemd config
+  systemd:
+    daemon_reload: yes
+
+- name: enable service redis-server( start on boot)
+  systemd:
+    name: redis-server
+    enabled: yes
+    masked: no
+
+- name: ensure redis-server is running
+  systemd:
+    state: restarted
+    name: redis-server
+
+# - name: ensure redis-server is running
+#   command: redis-server --daemonize yes

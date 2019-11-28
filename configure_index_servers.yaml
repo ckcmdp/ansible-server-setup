@@ -1,0 +1,9 @@
+---
+
+- hosts: index_servers
+  remote_user: root
+  roles:
+    - prerequisites
+    - elasticsearch
+    - memcached
+    - redis

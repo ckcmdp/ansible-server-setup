@@ -1,4 +1,12 @@
-servers:
+index_servers:
+  hosts:
+    index_1:
+      ansible_connection: ssh
+      ansible_host: "localhost"
+      ansible_port: 52023
+      ansible_user: 'root'
+
+deploy_servers:
   hosts:
      ubun:
         ansible_connection: ssh

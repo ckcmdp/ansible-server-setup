@@ -1,0 +1,33 @@
+---
+
+- name: install memcached
+  apt:
+    name: memcached
+    state: latest
+    update_cache: yes
+
+- name: install libmemcached-tools
+  apt:
+    name: libmemcached-tools
+    state: latest
+    update_cache: yes
+
+- name: reload systemd config
+  systemd:
+    daemon_reload: yes
+
+- name: enable service memcached( start on boot)
+  systemd:
+    name: memcached
+    enabled: yes
+    masked: no
+
+- name: ensure memcached is running
+  systemd:
+    state: started
+    name: memcached
+
+# - name: ensure memcached is running
+#   service:
+#     state: started
+#     name: memcached
