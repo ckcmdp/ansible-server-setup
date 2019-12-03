@@ -1,0 +1,18 @@
+---
+
+- hosts: deploy_servers
+  name: Configuring ubuntu server for rails and elixir
+  remote_user: root
+  vars_files:
+    - variables.yml
+  roles:
+    - prerequisites
+    - nodejs
+    - yarn
+    - elixir
+    - ruby
+    - bundler
+    - add_users
+    - create_required_directories
+    - copy_linked_files
+    - logrotate

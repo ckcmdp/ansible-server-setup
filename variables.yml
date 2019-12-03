@@ -1,17 +1,19 @@
 # set download directory for packages
 download_dir: /tmp
 
-# set app name
-APP_NAME: testDeploy
+# provide your local machine account name.
+MY_SYSTEM_ACCOUNT: phantom
 
-# set app directory of your local machine
-APP_DIR: /home/Arnab/dev/testDeploy
 
-# set deploy directory name. for eg- "production", App will be deployed to /home/deploy/production
-DEPLOY_DIR: production
+users:
+  - username: ryzen
+    password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.
+    app_name: testDeploy
+    app_path_local: /home/phantom/Desktop/testDeploy
+    port: "80"
 
-# Provide your local machine username
-USER: Arnab
-
-# password for user deploy( make sure it is encrypted )
-deploy_user_password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.
+  - username: arnab
+    password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.
+    app_name: crypto-calculator
+    app_path_local: /media/phantom/DATA1/documents/Rails_Projects/crypto-calculator
+    port: "81"

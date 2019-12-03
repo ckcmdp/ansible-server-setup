@@ -1,10 +1,10 @@
 index_servers:
   hosts:
     index_1:
-      ansible_connection: ssh
-      ansible_host: "localhost"
-      ansible_port: 52023
-      ansible_user: 'root'
+        ansible_connection: ssh
+        ansible_host: 18.219.166.183
+        ansible_port: 22
+        ansible_user: root
 
 deploy_servers:
   hosts:
@@ -13,6 +13,12 @@ deploy_servers:
         ansible_host: "localhost"
         ansible_port: 52022
         ansible_user: 'root'
+
+      # aws:
+      #   ansible_connection: ssh
+      #   ansible_host: 18.219.166.183
+      #   ansible_port: 22
+      #   ansible_user: root
 
 local_machine:
   hosts:

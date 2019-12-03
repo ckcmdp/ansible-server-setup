@@ -6,15 +6,15 @@
     name: logrotate
     state: latest
 
-- name: setup logrotate configuration in /etc/logrotate.d/{{APP_NAME}}
+- name: setup logrotate configuration in /etc/logrotate.d/
   copy:
-    dest: /etc/logrotate.d/{{APP_NAME}}
+    dest: /etc/logrotate.d/{{ item.app_name }}
     owner: root
     group: root
     mode: '0644'
     content: |
-      /home/deploy/{{ DEPLOY_DIR }}/{{APP_NAME}}/current/log/*.log {
-        su deploy deploy
+      /var/deploy/{{ item.username }}/{{ item.app_name }}/current/log/*.log {
+        su {{ item.username }} {{ item.username }}
         daily
         missingok
         rotate 15
@@ -22,11 +22,15 @@
         delaycompress
         notifempty
         copytruncate }
+  with_items:
+    - "{{ users }}"
 
-- name: Set up cron for daily logrotation of {{APP_NAME}}
+- name: Set up cron for daily logrotation of apps
   cron:
-    name:  daily log rotation of {{APP_NAME}}
+    name:  daily log rotation of {{ item.app_name }}
     minute: "0"
     hour: "0"
-    user: root
-    job: /usr/sbin/logrotate -f /etc/logrotate.d/{{APP_NAME}} > /dev/null
+    user: "{{ item.username }}"
+    job: /usr/sbin/logrotate -f /etc/logrotate.d/{{ item.app_name }} > /dev/null
+  with_items:
+    - "{{ users }}"

@@ -16,12 +16,6 @@
     name: nginx
     state: started
 
-- name: Copy shared.conf file
-  copy:
-    src: files/shared.conf
-    dest: /etc/nginx/shared.conf
-    mode: 0644
-
 - name: Copy rails_app.conf file
   copy:
     src: files/rails_app.conf
@@ -36,31 +30,44 @@
 
 - name: create a configuration file with app name and put app specific config
   copy:
-    dest: "/etc/nginx/sites-available/{{ APP_NAME }}"
+    dest: "/etc/nginx/sites-available/{{ item.app_name }}"
     mode: 0644
-    content:
-      "upstream app {
-        server unix:/home/deploy/{{ DEPLOY_DIR }}/{{ APP_NAME }}/shared/tmp/sockets/puma.sock fail_timeout=0;
-        }
+    content: |
+      upstream app_{{ item.app_name }} {
+        server unix:/var/deploy/{{ item.username }}/{{ item.app_name }}/shared/tmp/sockets/puma.sock fail_timeout=0;}
 
       server {
-        server_name localhost;
+        listen {{ item.port }};
+        server_name {{ item.app_name }}.com;
 
-        root /home/deploy/{{ DEPLOY_DIR }}/{{ APP_NAME }}/current/public;
+        root /var/deploy/{{ item.username }}/{{ item.app_name }}/current/public;
+        try_files $uri/index.html $uri @app_{{ item.app_name }};
 
-        access_log /home/deploy/{{ DEPLOY_DIR }}/{{ APP_NAME }}/current/log/nginx.access.log;
-        error_log /home/deploy/{{ DEPLOY_DIR }}/{{ APP_NAME }}/current/log/nginx.error.log info;
+        location @app_{{ item.app_name }} {
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header Host $host;
+          proxy_redirect off;
+          proxy_http_version 1.1;
+          proxy_set_header Connection '';
+          proxy_pass http://app_{{ item.app_name }}; }
 
-        include /etc/nginx/shared.conf;
+        access_log /var/deploy/{{ item.username }}/{{ item.app_name }}/current/log/nginx.access.log;
+        error_log /var/deploy/{{ item.username }}/{{ item.app_name }}/current/log/nginx.error.log info;
+
         include /etc/nginx/rails_app.conf;
-        include /etc/nginx/restrictions.conf;
-        } "
+        include /etc/nginx/restrictions.conf; }
+  with_items:
+    - "{{ users }}"
 
-- name: create symlink for {{ APP_NAME }} nginx config
+- name: create symlink for {{ item.app_name }} nginx config
   file:
-    src: /etc/nginx/sites-available/{{ APP_NAME }}
-    dest: /etc/nginx/sites-enabled/{{ APP_NAME  }}
+    src: /etc/nginx/sites-available/{{ item.app_name }}
+    dest: /etc/nginx/sites-enabled/{{ item.app_name  }}
     state: link
+  with_items:
+    - "{{ users }}"
 
 - name: remove default nginx configuration
   file:
@@ -71,4 +78,23 @@
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-  notify: Restart Nginx
+
+# - name: reload systemd config
+#   systemd:
+#     daemon_reload: yes
+
+# - name: enable service nginx( start on boot)
+#   systemd:
+#     name: nginx
+#     enabled: yes
+#     masked: no
+
+# - name: ensure nginx is restarted
+#   systemd:
+#     state: restarted
+#     name: nginx
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
