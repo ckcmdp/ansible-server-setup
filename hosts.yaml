@@ -19,11 +19,3 @@ deploy_servers:
       #   ansible_host: 18.219.166.183
       #   ansible_port: 22
       #   ansible_user: root
-
-local_machine:
-  hosts:
-     my_system:
-       ansible_connection: ssh
-       ansible_host: "localhost"
-       ansible_port: 22
-       ansible_user: 'Arnab'
