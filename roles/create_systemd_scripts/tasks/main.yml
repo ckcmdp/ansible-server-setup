@@ -1,21 +1,10 @@
 ---
 
 - name: create systemd scripts for puma servers
-  copy:
+  template:
+    src: templates/puma_systemd.tpe
     dest: "/etc/systemd/system/{{ item.app_name }}_puma.service"
     mode: 0777
-    content: |
-      [Unit]
-      Description=Puma HTTP Server
-      After=network.target
-      [Service]
-      Type=simple
-      User=root
-      WorkingDirectory=/var/deploy/{{ item.username }}/{{ item.app_name }}/current
-      ExecStart=/bin/bash -lc 'bundle exec puma -C /var/deploy/{{ item.username }}/{{ item.app_name }}/shared/puma.rb'
-      Restart=always
-      [Install]
-      WantedBy=multi-user.target
   with_items:
     - "{{ users }}"
 

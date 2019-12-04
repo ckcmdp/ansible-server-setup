@@ -24,13 +24,3 @@
         copytruncate }
   with_items:
     - "{{ users }}"
-
-- name: Set up cron for daily logrotation of apps
-  cron:
-    name:  daily log rotation of {{ item.app_name }}
-    minute: "0"
-    hour: "0"
-    user: "{{ item.username }}"
-    job: /usr/sbin/logrotate -f /etc/logrotate.d/{{ item.app_name }} > /dev/null
-  with_items:
-    - "{{ users }}"
