@@ -13,7 +13,7 @@
     group: root
     mode: '0644'
     content: |
-      /var/deploy/{{ item.username }}/{{ item.app_name }}/current/log/*.log {
+      /var/www/{{ item.username }}/{{ item.app_name }}/current/log/*.log {
         su {{ item.username }} {{ item.username }}
         daily
         missingok

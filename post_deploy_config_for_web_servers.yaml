@@ -1,10 +1,12 @@
 ---
 
 - hosts: deploy_servers
-  name: Installing and configuring nginx
+  name: Installing nginx and create systemd scripts
   remote_user: root
+  become: yes
   vars_files:
     - variables.yml
   roles:
-    - nginx
-    - create_systemd_scripts
+    # - nginx
+    # - puma_service_systemd
+    - delayed_job_service_systemd

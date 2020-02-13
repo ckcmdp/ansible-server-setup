@@ -1,19 +1,18 @@
 # set download directory for packages
-download_dir: /tmp
+# download_dir: /tmp
 
 # provide your local machine account name.
-MY_SYSTEM_ACCOUNT: phantom
-
+MY_SYSTEM_ACCOUNT: chandankumar
 
 users:
-  - username: ryzen
+  - username: deploy
     password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.
-    app_name: testDeploy
-    app_path_local: /home/phantom/Desktop/testDeploy
+    app_name: staging
+    app_path_local: /home/chandankumar/dev/SM
     port: "80"
 
-  - username: arnab
-    password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.
-    app_name: crypto-calculator
-    app_path_local: /media/phantom/DATA1/documents/Rails_Projects/crypto-calculator
-    port: "81"
+  # - username: arnab
+  #   password: $6$random_salt$XESMj0Y.0BTU1qzPJ9GUIREUDyw85y12pFRAXx68jwrPh0Tvfkfh8zDH0S.iWxQARohhpbq2X3jV5fJI1sX24.
+  #   app_name: crypto-calculator
+  #   app_path_local: /media/phantom/DATA1/documents/Rails_Projects/crypto-calculator
+  #   port: "81"

@@ -1,8 +1,14 @@
 ---
+- name: ensure bundler is not installed
+  gem:
+    name: bundler
+    state: absent
 
 - name: install bundler
   gem:
     name: bundler
+    version: 1.17.1
+    state: present
     user_install: no
 
 - name: update gem

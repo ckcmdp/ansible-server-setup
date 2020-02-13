@@ -1,0 +1,22 @@
+- name: create systemd scripts for delayed job
+  template:
+    src: templates/delayed_job.txt
+    dest: "/etc/systemd/system/delayed_job_{{ item.app_name }}.service"
+    mode: 0777
+  with_items:
+    - "{{ users }}"
+
+- name: enable delayed job service (start on boot)
+  systemd:
+    name: "delayed_job_{{ item.app_name }}.service"
+    enabled: yes
+    masked: no
+  with_items:
+    - "{{ users }}"
+
+- name: start delayed job service
+  service:
+    name: delayed_job_{{ item.app_name }}
+    state: started
+  with_items:
+    - "{{ users }}"

@@ -1,0 +1,17 @@
+[Unit]
+Description=Start delayed_job instance for staging
+After=syslog.target
+
+[Service]
+Type=forking
+User=root
+Environment=RAILS_ENV=staging
+WorkingDirectory=/var/www/{{ item.username }}/{{ item.app_name }}/current
+ExecStart=/bin/sh -c "/usr/bin/ruby /var/www/{{ item.username }}/{{ item.app_name }}/current/bin/delayed_job start"
+ExecStop=/bin/sh -c "/usr/bin/ruby /var/www/{{ item.username }}/{{ item.app_name }}/current/bin/delayed_job stop"
+TimeoutSec=120
+PIDFile=/var/www/{{ item.username }}/{{ item.app_name }}/shared/tmp/pids/delayed_job.pid
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

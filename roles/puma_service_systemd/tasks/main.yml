@@ -1,0 +1,24 @@
+---
+
+- name: create systemd scripts for puma servers
+  template:
+    src: templates/puma.txt
+    dest: "/etc/systemd/system/puma_{{ item.app_name }}.service"
+    mode: 0777
+  with_items:
+    - "{{ users }}"
+
+- name: enable puma service (start on boot)
+  systemd:
+    name: "puma_{{ item.app_name }}.service"
+    enabled: yes
+    masked: no
+  with_items:
+    - "{{ users }}"
+
+- name: start puma service
+  service:
+    name: puma_{{ item.app_name }}
+    state: started
+  with_items:
+    - "{{ users }}"

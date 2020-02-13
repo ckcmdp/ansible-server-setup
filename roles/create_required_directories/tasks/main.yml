@@ -2,18 +2,14 @@
 
 - name: create directories using usernames and app_names
   file:
-    path: "/var/deploy/{{ item.username }}/{{ item.app_name }}"
+    path: "/var/www/{{ item.username }}/{{ item.app_name }}"
     state: directory
-    owner: "{{ item.username }}"
-    group: "{{ item.username }}"
-    mode: 0777
-    recurse: yes
   with_items:
     - "{{ users }}"
 
-- name: set folder owners
+- name: set folder owners and modes
   file:
-    path: "/var/deploy/{{ item.username }}"
+    path: "/var/www/{{ item.username }}"
     owner: "{{ item.username }}"
     group: "{{ item.username }}"
     mode: 0777

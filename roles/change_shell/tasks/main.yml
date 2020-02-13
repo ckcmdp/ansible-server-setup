@@ -1,0 +1,4 @@
+- name: change shell for newly created users
+  shell: chsh -s /bin/bash {{ item.username }}
+  with_items:
+    - "{{ users }}"

@@ -1,21 +1,22 @@
-index_servers:
-  hosts:
-    index_1:
-        ansible_connection: ssh
-        ansible_host: 18.219.166.183
-        ansible_port: 22
-        ansible_user: root
+# index_servers:
+#   hosts:
+#     index_1:
+#         ansible_connection: ssh
+#         ansible_host: 18.219.166.183
+#         ansible_port: 22
+#         ansible_user: root
 
 deploy_servers:
   hosts:
-     ubun:
-        ansible_connection: ssh
-        ansible_host: "localhost"
-        ansible_port: 52022
-        ansible_user: 'root'
+    #  ubun:
+    #     ansible_connection: ssh
+    #     ansible_host: "localhost"
+    #     ansible_port: 52022
+    #     ansible_user: 'root'
 
-      # aws:
-      #   ansible_connection: ssh
-      #   ansible_host: 18.219.166.183
-      #   ansible_port: 22
-      #   ansible_user: root
+      aws:
+        ansible_connection: ssh
+        ansible_host: 34.222.156.59
+        ansible_port: 2000
+        ansible_user: ubuntu
+        ansible_ssh_private_key_file: ~/Documents/sbs-staging.pem
